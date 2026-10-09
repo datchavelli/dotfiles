@@ -1,0 +1,8 @@
+/*
+!.gitignore
+!.bashrc
+!.config/nvim/
+!.config/rofi/
+!.config/wezterm/
+!.config/starship.toml
+!.zshrc

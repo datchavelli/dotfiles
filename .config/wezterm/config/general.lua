@@ -1,46 +1,57 @@
-return {
-   -- behaviours
-   automatically_reload_config = true,
-   exit_behavior = 'CloseOnCleanExit', -- if the shell program exited with a successful status
-   exit_behavior_messaging = 'Verbose',
-   status_update_interval = 1000,
+local Icons = require "utils.class.icon"
+local fs = require("utils.fn").fs
 
-   scrollback_lines = 20000,
+local Config = {}
 
-   hyperlink_rules = {
-      -- Matches: a URL in parens: (URL)
-      {
-         regex = '\\((\\w+://\\S+)\\)',
-         format = '$1',
-         highlight = 1,
+if fs.platform().is_win then
+  Config.default_prog =
+    { "pwsh", "-NoLogo", "-ExecutionPolicy", "RemoteSigned", "-NoProfileLoadTime" }
+
+  Config.launch_menu = {
+    {
+      label = Icons.Progs["pwsh.exe"] .. " PowerShell V7",
+      args = {
+        "pwsh",
+        "-NoLogo",
+        "-ExecutionPolicy",
+        "RemoteSigned",
+        "-NoProfileLoadTime",
       },
-      -- Matches: a URL in brackets: [URL]
-      {
-         regex = '\\[(\\w+://\\S+)\\]',
-         format = '$1',
-         highlight = 1,
-      },
-      -- Matches: a URL in curly braces: {URL}
-      {
-         regex = '\\{(\\w+://\\S+)\\}',
-         format = '$1',
-         highlight = 1,
-      },
-      -- Matches: a URL in angle brackets: <URL>
-      {
-         regex = '<(\\w+://\\S+)>',
-         format = '$1',
-         highlight = 1,
-      },
-      -- Then handle URLs not wrapped in brackets
-      {
-         regex = '\\b\\w+://\\S+[)/a-zA-Z0-9-]+',
-         format = '$0',
-      },
-      -- implicit mailto link
-      {
-         regex = '\\b\\w+@[\\w-]+(\\.[\\w-]+)+\\b',
-         format = 'mailto:$0',
-      },
-   },
-}
+      cwd = "~",
+    },
+    {
+      label = Icons.Progs["pwsh.exe"] .. " PowerShell V5",
+      args = { "powershell" },
+      cwd = "~",
+    },
+    { label = "Command Prompt", args = { "cmd.exe" }, cwd = "~" },
+    { label = Icons.Progs["git"] .. " Git bash", args = { "sh", "-l" }, cwd = "~" },
+  }
+
+  -- ref: https://wezfurlong.org/wezterm/config/lua/WslDomain.html
+  Config.wsl_domains = {
+    {
+      name = "WSL:Ubuntu",
+      distribution = "Ubuntu",
+      username = "tzar",
+      default_cwd = "~",
+      default_prog = { "zsh", "-l" },
+    },
+    {
+      name = "WSL:Alpine",
+      distribution = "Alpine",
+      username = "tzar",
+      default_cwd = "/home/tzar",
+    },
+  }
+end
+
+Config.default_cwd = fs.home()
+
+-- ref: https://wezfurlong.org/wezterm/config/lua/SshDomain.html
+Config.ssh_domains = {}
+
+-- ref: https://wezfurlong.org/wezterm/multiplexing.html#unix-domains
+Config.unix_domains = {}
+
+return Config
