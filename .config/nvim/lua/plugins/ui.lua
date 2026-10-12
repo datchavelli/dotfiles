@@ -25,7 +25,7 @@ return {
     event = "VeryLazy",
     opts = {
       options = {
-        theme = "solarized_dark",
+        theme = "onedark",
       },
     },
   },
@@ -41,7 +41,7 @@ return {
        ██║    ███╔╝  ██╔══██║██╔══██╗
        ██║   ███████╗██║  ██║██║  ██║
        ╚═╝   ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝
-                 [@tz_ ]             
+                 [@0d1n]             
 ]]
 
       logo = string.rep("\n", 1) .. logo .. "\n\n"
